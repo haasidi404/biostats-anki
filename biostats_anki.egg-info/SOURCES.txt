@@ -1,0 +1,12 @@
+setup.py
+biostats_anki/__init__.py
+biostats_anki/main.py
+biostats_anki.egg-info/PKG-INFO
+biostats_anki.egg-info/SOURCES.txt
+biostats_anki.egg-info/dependency_links.txt
+biostats_anki.egg-info/entry_points.txt
+biostats_anki.egg-info/requires.txt
+biostats_anki.egg-info/top_level.txt
+biostats_anki/anki-card-templates/C1_biostats-phd_card.html
+biostats_anki/anki-card-templates/C2_biostats-phd_card.html
+biostats_anki/anki-card-templates/css-biostats-phd_card.css

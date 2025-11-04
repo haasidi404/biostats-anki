@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: biostats-anki
+Version: 0.1.0
+Summary: anki deck generator for biostats phd cards
+Author: Ha'asídí 鹿泉·哨
+Author-email: public.4g8dtswh@naashjeii.com
+License: mit
+Description-Content-Type: text/markdown
+Requires-Dist: genanki
+Dynamic: author
+Dynamic: author-email
+Dynamic: description-content-type
+Dynamic: license
+Dynamic: requires-dist
+Dynamic: summary

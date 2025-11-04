@@ -1,0 +1,206 @@
+/* === ANKI ENVIRONMENT & GLOBAL RESETS === */
+html, body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Fonts */
+    --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-serif: 'Iowan Old Style', 'Georgia', serif; /* Used for answers/statements for better math readability */
+    --font-code: "Fira Code", Menlo, Consolas, monospace;
+    /* MODIFICATION: Increased base font size for better readability. */
+    --font-size-base: 22px;
+    --line-height-base: 1.6; /* Suggestion: Increased from 1.5 for better readability of math formulas */
+}
+
+.card {
+    font-family: var(--font-main);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    text-align: left;
+    /* MODIFICATION: 'auto' margin is no longer needed for centering due to the flexbox solution on the body.
+       A simple margin provides spacing from window edges. */
+    margin: 1em;
+    max-width: 800px; /* Slightly increased max-width to accommodate larger font */
+    width: 100%; /* Ensures card resizes gracefully on smaller screens */
+    padding: 0.5em;
+    box-sizing: border-box; /* Ensures padding doesn't add to the max-width */
+}
+
+.cloze {
+    font-weight: 600;
+    color: var(--color-highlight);
+}
+.nightMode.cloze {
+    color: var(--color-highlight);
+}
+
+/* === COLOR PALETTES (Using CSS Variables) === */
+/* Day Mode (Light, Minimalist) */
+.card {
+    --color-bg: #FFFFFF;
+    --color-text-primary: #2D3748;
+    --color-text-secondary: #718096;
+    --color-border: #E2E8F0;
+    --color-pill-bg: #EDF2F7;
+    --color-header: #4A5568;
+    --color-accent-bg: #E6FFFA; /* Intuition/Insight */
+    --color-accent-border: #38B2AC;
+    --color-example-bg: #F0F4F8; /* Example Block */
+    --color-highlight: #2B6CB0;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+}
+
+/* Night Mode (Dark) - Optimized for Reduced Eye Strain */
+.nightMode.card {
+    --color-bg: #1A202C;
+    --color-text-primary: #E2E8F0;
+    --color-text-secondary: #A0AEC0;
+    --color-border: #2D3748;
+    --color-pill-bg: #2D3748;
+    --color-header: #CBD5E0;
+    --color-accent-bg: #234E52; /* Intuition/Insight */
+    --color-accent-border: #4FD1C5;
+    --color-example-bg: #2D3748; /* Example Block */
+    --color-highlight: #63B3ED;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+}
+
+/* === LAYOUT & STRUCTURE === */
+.card-container {
+    padding: 1em;
+}
+
+/* Breadcrumbs and Pills */
+.breadcrumbs {
+    margin-bottom: 1.5rem;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pill {
+    display: inline-block;
+    padding: 0.2em 0.8em;
+    border-radius: 15px;
+    margin-right: 0.5em;
+    margin-bottom: 0.3em; /* Helps with wrapping on small screens */
+    background-color: var(--color-pill-bg);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* Question and Answer */
+.question-block {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+.front-side-question {
+    font-size: 1em; /* Smaller on the back */
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+#answer-separator {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 1.5em 0;
+}
+
+.answer-block,.formal-content {
+    font-size: 1.1em;
+    margin-bottom: 1.5em;
+    font-family: var(--font-serif);
+}
+
+/* Detail Blocks (Formalism, Elaboration, etc.) */
+.detail-block {
+    margin-bottom: 1.5em;
+    padding: 1em;
+    border-radius: 8px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+}
+
+.block-header {
+    font-size: 0.85em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-header);
+    margin-bottom: 0.75em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Specific Block Styling */
+.intuition-block {
+    background-color: var(--color-accent-bg);
+    border-left: 4px solid var(--color-accent-border);
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+}
+
+.example-block {
+    background-color: var(--color-example-bg);
+    border: 1px solid var(--color-border);
+    font-size: 0.95em;
+}
+
+/* Code Styling within Examples (if present) */
+.example-block pre,.example-block code, pre, code {
+    font-family: var(--font-code);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: var(--color-border);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+pre {
+    padding: 1em;
+    overflow-x: auto; /* Allows scrolling for very long code lines */
+}
+
+.nightMode.example-block pre,.nightMode.example-block code,.nightMode pre,.nightMode code {
+    background-color: var(--color-bg);
+}
+
+/* Footer */
+.footer {
+    margin-top: 2.5em;
+    font-size: 0.75em;
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.7;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1em;
+}
+
+.id-tag {
+    font-family: var(--font-code);
+}
+
+/* === MOBILE OPTIMIZATION === */
+@media (max-width: 600px) {
+   .card {
+        --font-size-base: 18px;
+    }
+   .card-container {
+        padding: 0.5em;
+    }
+   .question-block {
+        font-size: 1.1em;
+    }
+}

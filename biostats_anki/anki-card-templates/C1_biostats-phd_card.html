@@ -1,0 +1,47 @@
+### CARD 1
+
+### FRONT
+<div class="card-container">
+    <div class="breadcrumbs">
+        {{#Context}}<span class="pill context-pill">{{Context}}</span>{{/Context}}
+        {{#Topic}}<span class="pill topic-pill">{{Topic}}</span>{{/Topic}}
+        {{#Molecule}}<span class="pill molecule-pill">{{Molecule}}</span>{{/Molecule}}
+    </div>
+
+    <div class="question-block">
+        {{Question}}
+    </div>
+</div>
+
+### BACK
+<div class="card-container">
+    <div class="breadcrumbs">
+        {{#Context}}<span class="pill context-pill">{{Context}}</span>{{/Context}}
+        {{#Topic}}<span class="pill topic-pill">{{Topic}}</span>{{/Topic}}
+        {{#Molecule}}<span class="pill molecule-pill">{{Molecule}}</span>{{/Molecule}}
+    </div>
+
+    <div class="question-block front-side-question">
+        {{Question}}
+    </div>
+
+    <hr id="answer-separator">
+
+    <div class="answer-block">
+        {{Answer}}
+    </div>
+
+    <div class="details-section">
+        {{#Extra_Context}}
+        <div class="detail-block extra-context-block">
+            <div class="block-header">Context</div>
+            <div class="block-content">{{Extra_Context}}</div>
+        </div>
+        {{/Extra_Context}}
+    </div>
+
+    <div class="footer">
+        <span class="source">{{Source}}</span>
+        <span class="id-tag">{{ID}}</span>
+    </div>
+</div>
