@@ -97,6 +97,27 @@ html, body {
     font-weight: 500;
 }
 
+.context-pill {
+    background-color: #4A90E2; /* blue */
+    color: white;
+}
+
+.topic-pill {
+    background-color: #50E3C2; /* teal */
+    color: #000;
+}
+
+.molecule-pill {
+    background-color: #F5A623; /* orange */
+    color: white;
+}
+
+/* add this new style */
+.card-type-pill {
+    background-color: #9013FE; /* purple */
+    color: white;
+}
+
 /* Question and Answer */
 .question-block {
     font-size: 1.2em;

@@ -14,6 +14,7 @@ MODEL_FIELDS = [
     {'name': 'Context'},
     {'name': 'Topic'},
     {'name': 'Molecule'},
+    {'name': 'Card_Type'},
     {'name': 'Question'},
     {'name': 'Answer'},
     {'name': 'Extra_Context'},
@@ -61,7 +62,6 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
     main logic to generate the anki deck.
     """
     
-    # locate template files *inside the package*
     package_dir = pathlib.Path(__file__).resolve().parent
     templates_dir = package_dir / 'anki-card-templates'
     
@@ -69,13 +69,12 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
     c1_html_path = templates_dir / 'C1_biostats-phd_card.html'
     c2_html_path = templates_dir / 'C2_biostats-phd_card.html'
 
-    # load template content
     print("loading templates...")
     css_content = read_file(css_path)
     c1_html_content = read_file(c1_html_path)
     c2_html_content = read_file(c2_html_path)
     
-    # parse html
+    
     c1_front, c1_back = parse_html_template(c1_html_content)
     c2_front, c2_back = parse_html_template(c2_html_content)
 
@@ -97,14 +96,12 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
         css=css_content,
         model_type=genanki.Model.CLOZE
     )
-
-    # create the deck
+    
     deck_id = generate_id_from_name(deck_name)
     my_deck = genanki.Deck(deck_id, deck_name)
     
     print(f"processing csv file: {input_csv_path}")
-    
-    # read the csv and add notes
+
     notes_added = 0
     cloze_notes = 0
     qa_notes = 0
@@ -117,12 +114,12 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
                 if not row:
                     continue  # skip empty rows
                 
-                if len(row) != 8:
-                    print(f"warning: skipping malformed row. expected 8 fields, got {len(row)}: {row}", file=sys.stderr)
+                if len(row) != 9: # changed from 8 to 9
+                    print(f"warning: skipping malformed row. expected 9 fields, got {len(row)}: {row}", file=sys.stderr)
                     continue
                 
                 field_data = row
-                question_content = row[4]
+                question_content = row[5] # changed from 4 to 5
                 
                 if '{{c1::' in question_content:
                     note = genanki.Note(model=model_c2, fields=field_data)
@@ -141,10 +138,10 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
         print(f"an error occurred while reading the csv: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # package and save
+    
     if notes_added > 0:
         print("packaging deck...")
-        # ensure output directory exists
+        
         output_dir = os.path.dirname(output_apkg_path)
         if output_dir:
             os.makedirs(output_dir, exist_ok=True)
@@ -159,9 +156,7 @@ def create_deck(input_csv_path: str, deck_name: str, output_apkg_path: str):
         print("no notes were found in the csv. no deck was created.")
 
 def cli_entry():
-    """
-    command-line entry point.
-    """
+    
     parser = argparse.ArgumentParser(description='create anki decks from llm-generated csvs.')
     
     parser.add_argument(
@@ -177,7 +172,6 @@ def cli_entry():
         help='the desired name for the anki deck (also used for the output filename).'
     )
     
-    # mutually exclusive group for output path
     output_group = parser.add_mutually_exclusive_group()
     
     output_group.add_argument(
@@ -198,10 +192,9 @@ def cli_entry():
     
     args = parser.parse_args()
     
-    # resolve full path for input file
+    
     input_path = os.path.abspath(args.input_csv)
     
-    # determine output path
     if args.output:
         # user specified an exact file path
         output_path = args.output
@@ -212,7 +205,6 @@ def cli_entry():
         output_filename = f"{sane_filename}.apkg"
         output_path = os.path.join(args.output_dir, output_filename)
 
-    # ensure output path is absolute
     final_output_path = os.path.abspath(output_path)
     
     create_deck(input_path, args.name, final_output_path)
