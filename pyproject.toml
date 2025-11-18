@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biostats-anki"
+version = "1.0.0"
+description = "Anki deck builder for biostatistics PhD cards from UKI JSON/CSV files."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Ha'asídí 鹿泉·哨", email = "public.4g8dtswh@naashjeii.com" }
+]
+
+# define dependencies
+dependencies = [
+    "genanki>=0.13.0"
+]
+
+# define the command-line script
+[project.scripts]
+build-deck = "biostats_anki.cli:cli_entry"
+
+[tool.setuptools]
+# automatically find the 'biostats_anki' package
+packages = ["biostats_anki"]
+
+[tool.setuptools.package-data]
+# ensure the template files are included in the installed package
+"biostats_anki" = ["anki-card-templates/*.html", "anki-card-templates/*.css"]
