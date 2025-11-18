@@ -20,10 +20,6 @@ The tool is part of a larger workflow where a Unified Knowledge Inventory (UKI) 
 This project is packaged using `pyproject.toml`. You can install it locally using pip:
 
 ```bash
-# clone the repository (if you haven't already)
-git clone [https://github.com/yourusername/biostats_anki.git](https://github.com/yourusername/biostats_anki.git)
-cd biostats_anki
-
 # install the package in editable mode
 pip install -e .
 ````
