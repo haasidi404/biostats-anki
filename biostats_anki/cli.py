@@ -7,6 +7,33 @@ import pathlib
 from .builder import create_deck
 from .converter import convert_csv_to_json
 
+def _get_hierarchical_deck_name(source_id: str, unit_id: str) -> str:
+    """generates the anki deck name with parent hierarchy."""
+    
+    parent_map = {
+        "AM": "Methods",
+        "AST": "Advanced Theory",
+        "ADS": "Data Science",
+        "IST": "Intro Theory"
+    }
+    
+    parent = None
+    for prefix, parent_name in parent_map.items():
+        if source_id.startswith(prefix):
+            parent = parent_name
+            break
+    
+    if parent:
+        # new behavior: Methods::AM751::751-L04
+        # get last 3 digits of source_id
+        final_deck_digits = source_id[-3:] if len(source_id) >= 3 else source_id
+        final_deck_name = f"{final_deck_digits}-{unit_id}"
+        return f"{parent}::{source_id}::{final_deck_name}"
+    else:
+        # fallback to original behavior
+        return f"{source_id}-{unit_id}"
+
+
 def cli_entry():
     
     parser = argparse.ArgumentParser(description='create or convert anki decks from llm-generated files.')
@@ -84,7 +111,13 @@ def cli_entry():
                     deck_data = json.load(f)
                 source_id = deck_data['source_id']
                 unit_id = deck_data['unit_id']
-                deck_name = f"{source_id}-{unit_id}"
+                
+                # generate the hierarchical name for anki
+                anki_deck_name = _get_hierarchical_deck_name(source_id, unit_id)
+                
+                # create a safe name for the output file
+                safe_filename_base = f"{source_id}-{unit_id}"
+
             except Exception as e:
                 print(f"error reading deck name from json file: {input_path}", file=sys.stderr)
                 print(f"error: {e}", file=sys.stderr)
@@ -96,12 +129,12 @@ def cli_entry():
                 # this branch only runs if len(args.input_jsons) == 1
                 final_output_path = os.path.abspath(args.output)
             else:
-                # default behavior: use deck name in the specified dir
-                output_filename = f"{deck_name}.apkg"
+                # default behavior: use *safe* deck name in the specified dir
+                output_filename = f"{safe_filename_base}.apkg"
                 final_output_path = os.path.abspath(os.path.join(args.dir, output_filename))
 
-            print(f"--- building deck: {deck_name} ---")
-            create_deck(input_path, final_output_path, deck_name)
+            print(f"--- building deck: {anki_deck_name} ---")
+            create_deck(input_path, final_output_path, anki_deck_name)
             print("---------------------------------")
         
     elif args.command == 'convert':
