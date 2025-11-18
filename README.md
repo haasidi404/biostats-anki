@@ -1,6 +1,6 @@
-# Biostats Anki Deck Builder (badeck)
+# Biostats Anki Deck Builder (build-deck)
 
-`badeck` is a command-line tool for building Anki .apkg files from structured JSON input. It is designed specifically for the "Biostats-PhD-v3" Anki note types (Q/A and Cloze) and includes a utility for migrating legacy CSV-based decks to the new JSON format.
+`build-deck` is a command-line tool for building Anki .apkg files from structured JSON input. It is designed specifically for the "Biostats-PhD-v3" Anki note types (Q/A and Cloze) and includes a utility for migrating legacy CSV-based decks to the new JSON format.
 
 The tool is part of a larger workflow where a Unified Knowledge Inventory (UKI) is first processed by an LLM to generate a v4.0 JSON file, which this tool then consumes.
 
@@ -28,7 +28,7 @@ cd biostats_anki
 pip install -e .
 ````
 
-This makes the `badeck` command-line tool available in your environment.
+This makes the `build-deck` command-line tool available in your environment.
 
 -----
 
@@ -36,17 +36,17 @@ This makes the `badeck` command-line tool available in your environment.
 
 The tool provides two main commands: `build` and `convert`.
 
-### 1\. badeck build
+### 1\. build-deck build
 
 This command builds one or more `.apkg` deck files from v4.0 JSON inputs.
 
 ```bash
 # get help for the build command
-badeck build --help
+build-deck build --help
 ```
 
 ```text
-usage: badeck build [-h] [-o OUTPUT] [-d DIR] input_jsons [input_jsons ...]
+usage: build-deck build [-h] [-o OUTPUT] [-d DIR] input_jsons [input_jsons ...]
 
 positional arguments:
   input_jsons           one or more paths to the input v4.0 json files.
@@ -64,26 +64,26 @@ options:
 
 ```bash
 # build a single deck in the current directory
-badeck build ./my_deck.json
+build-deck build ./my_deck.json
 
 # build a single deck and specify the output path
-badeck build ./my_deck.json -o /path/to/AM751-L01.apkg
+build-deck build ./my_deck.json -o /path/to/AM751-L01.apkg
 
 # build multiple decks, saving them to the 'output_decks' directory
-badeck build ./deck1.json ./deck2.json -d ./output_decks
+build-deck build ./deck1.json ./deck2.json -d ./output_decks
 ```
 
-### 2\. badeck convert
+### 2\. build-deck convert
 
 This command converts one or more legacy 9-column CSV files into the v4.0 JSON format.
 
 ```bash
 # get help for the convert command
-badeck convert --help
+build-deck convert --help
 ```
 
 ```text
-usage: badeck convert [-h] [-o OUTPUT] [-d DIR] input_csvs [input_csvs ...]
+usage: build-deck convert [-h] [-o OUTPUT] [-d DIR] input_csvs [input_csvs ...]
 
 positional arguments:
   input_csvs            one or more paths to the legacy input csv files.
@@ -101,13 +101,13 @@ options:
 
 ```bash
 # convert a single csv, saving it as 'legacy_deck.json' in the current directory
-badeck convert ./legacy_deck.csv
+build-deck convert ./legacy_deck.csv
 
 # convert a single csv and specify the output name/path
-badeck convert ./legacy_deck.csv -o /path/to/new_deck_v4.json
+build-deck convert ./legacy_deck.csv -o /path/to/new_deck_v4.json
 
 # convert multiple csvs, saving them to the 'json_outputs' directory
-badeck convert ./deck1.csv ./deck2.csv -d ./json_outputs
+build-deck convert ./deck1.csv ./deck2.csv -d ./json_outputs
 # output: ./json_outputs/deck1.json, ./json_outputs/deck2.json
 ```
 
