@@ -1,2 +1,2 @@
 [console_scripts]
-build-deck = biostats_anki.cli:cli_entry
+bs-anki = biostats_anki.cli:cli_entry

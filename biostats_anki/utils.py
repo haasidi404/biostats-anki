@@ -34,12 +34,27 @@ def generate_id_from_name(name: str) -> int:
 
 def convert_legacy_latex(text: str) -> str:
     """
-    converts legacy \\vect{} and \\mat{} macros to standard \\boldsymbol{}.
+    updates latex formatting:
+    1. converts $$...$$ to \\[...\\] (display math)
+    2. converts $...$ to \\(...\\) (inline math)
+    3. converts legacy \\vect{} and \\mat{} macros to standard \\boldsymbol{}.
     """
     if not text:
         return ""
+
+    # 1. convert display math: $$...$$ -> \[...\]
+    # uses dotall flag so the dot matches newlines (for multiline equations)
+    text = re.sub(r'\$\$(.*?)\$\$', r'\\[\1\\]', text, flags=re.DOTALL)
+
+    # 2. convert inline math: $...$ -> \(...\)
+    # uses negative lookbehind/lookahead to avoid matching escaped \$
+    # converts only if $ is not preceded by a backslash
+    text = re.sub(r'(?<!\\)\$(.*?)(?<!\\)\$', r'\\(\1\\)', text, flags=re.DOTALL)
+
+    # 3. convert legacy macros
     # convert \vect{...} to \boldsymbol{...}
     text = re.sub(r'\\vect\{(.+?)\}', r'\\boldsymbol{\1}', text)
     # convert \mat{...} to \boldsymbol{...}
     text = re.sub(r'\\mat\{(.+?)\}', r'\\boldsymbol{\1}', text)
+    
     return text

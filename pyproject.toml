@@ -19,7 +19,7 @@ dependencies = [
 
 # define the command-line script
 [project.scripts]
-build-deck = "biostats_anki.cli:cli_entry"
+bs-anki = "biostats_anki.cli:cli_entry"
 
 [tool.setuptools]
 # automatically find the 'biostats_anki' package
